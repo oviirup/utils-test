@@ -21,14 +21,15 @@ jobs:
         run: |
           git config user.name "${{ github.repository_owner }}"
           git config user.email "${{ github.repository_owner_id }}+${{ github.repository_owner }}@users.noreply.github.com"
+      - name: 🔧 Setup NPM
+        run: |
+          npm config set access public
+          npm config set provenance true
       - name: 🚀 Create Pull Request & Publish
         id: changesets
         uses: changesets/action@v1
         with:
-          publish: |
-            npm config set access public
-            npm config set provenance true
-            bun changeset publish
+          publish: bun changeset publish
           setupGitUser: false
           commit: "✅ chore: update version"
           title: "✅ chore: update version"
