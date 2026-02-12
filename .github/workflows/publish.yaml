@@ -23,7 +23,6 @@ jobs:
         uses: changesets/action@v1
         with:
           publish: bun changeset publish
-          setupGitUser: false
           commit: "✅ chore: update version"
           title: "✅ chore: update version"
         env:
