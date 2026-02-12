@@ -1,28 +1,35 @@
 name: publish
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 on:
-  workflow_run:
-    workflows: [ci]
-    types: [completed]
+  push:
     branches: [main]
 jobs:
-  publish: # only publish if the ci workflow succeeded
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+  publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: 🟢 Setup Bun
         uses: oven-sh/setup-bun@v2
+      - name: 🟢 Setup Node
+        uses: actions/setup-node@v6
       - name: ⚙️ Install & build
         shell: bash
         run: |
           bun install
           bun run build
+      - name: 🔧 Setup Git User & Signing
+        run: |
+          git config user.name "${{ github.repository_owner }}"
+          git config user.email "${{ github.repository_owner_id }}+${{ github.repository_owner }}@users.noreply.github.com"
       - name: 🚀 Create Pull Request & Publish
         id: changesets
         uses: changesets/action@v1
         with:
-          publish: bun changeset publish
+          publish: |
+            npm config set access public
+            npm config set provenance true
+            bun changeset publish
+          setupGitUser: false
           commit: "✅ chore: update version"
           title: "✅ chore: update version"
         env:
