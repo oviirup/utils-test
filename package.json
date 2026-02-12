@@ -1,0 +1,43 @@
+{
+  "name": "@oviirup/utils-test",
+  "version": "1.0.6",
+  "description": "Collection of common JavaScript / TypeScript utilities bt @oviirup",
+  "license": "MIT",
+  "repository": "https://github.com/oviirup/utils-test",
+  "author": "Avirup Ghosh (github.com/oviirup)",
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./array": "./dist/array/index.js",
+    "./assertions": "./dist/assertions/index.js",
+    "./clsx": "./dist/clsx/index.js",
+    "./nanoid": "./dist/nanoid/index.js",
+    "./number": "./dist/number/index.js",
+    "./object": "./dist/object.js",
+    "./promise": "./dist/promise/index.js",
+    "./string": "./dist/string/index.js",
+    "./string/casing": "./dist/string/casing.js",
+    "./types": "./dist/types.js",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "format": "biome format --write",
+    "lint": "biome check",
+    "prepare": "lefthook install",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.14",
+    "@changesets/changelog-github": "^0.5.2",
+    "@changesets/cli": "^2.29.8",
+    "@types/bun": "^1.3.9",
+    "lefthook": "^2.1.0",
+    "tsdown": "^0.20.3",
+    "typescript": "^5.9.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

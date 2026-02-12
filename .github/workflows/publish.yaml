@@ -1,0 +1,31 @@
+name: publish
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+on:
+  workflow_run:
+    workflows: [ci]
+    types: [completed]
+    branches: [main]
+jobs:
+  publish: # only publish if the ci workflow succeeded
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 🟢 Setup Bun
+        uses: oven-sh/setup-bun@v2
+      - name: ⚙️ Install & build
+        shell: bash
+        run: |
+          bun install
+          bun run build
+      - name: 🚀 Create Pull Request & Publish
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          publish: bun changeset publish
+          setupGitUser: false
+          commit: "✅ chore: update version"
+          title: "✅ chore: update version"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
